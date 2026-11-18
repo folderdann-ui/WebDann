@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajah Budaya Nusantara — Simulasi & Eksplorasi Interaktif</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Cinzel Decorative, Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        soga: {
+                            light: '#7A4E2D',
+                            DEFAULT: '#5C3A21',
+                            dark: '#3B2313',
+                            deep: '#241409'
+                        },
+                        emas: {
+                            light: '#FDE68A',
+                            DEFAULT: '#D4AF37',
+                            kunyit: '#F59E0B',
+                            dark: '#B45309'
+                        },
+                        terakota: {
+                            light: '#B93849',
+                            DEFAULT: '#8B2635',
+                            dark: '#5E1621'
+                        },
+                        lontar: {
+                            light: '#FFFDF9',
+                            DEFAULT: '#FAF6F0',
+                            dark: '#EFE6D5',
+                            border: '#DFD1B8'
+                        }
+                    },
+                    fontFamily: {
+                        nusantara: ['"Cinzel Decorative"', 'serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS untuk Motif Batik & Ornamen Nusantara -->
+    <style>
+        /* Latar belakang motif Kawung & Parang halus */
+        .bg-batik-pattern {
+            background-color: #FAF6F0;
+            background-image: 
+                radial-gradient(circle at 100% 150%, #FAF6F0 24%, #EFE6D5 25%, #EFE6D5 28%, #FAF6F0 29%, #FAF6F0 36%, #EFE6D5 36%, #EFE6D5 40%, transparent 40%, transparent),
+                radial-gradient(circle at 0 150%, #FAF6F0 24%, #EFE6D5 25%, #EFE6D5 28%, #FAF6F0 29%, #FAF6F0 36%, #EFE6D5 36%, #EFE6D5 40%, transparent 40%, transparent),
+                radial-gradient(circle at 50% 100%, #EFE6D5 10%, #FAF6F0 11%, #FAF6F0 23%, #EFE6D5 24%, #EFE6D5 30%, #FAF6F0 31%, #FAF6F0 43%, #EFE6D5 44%, #EFE6D5 50%, #FAF6F0 51%, #FAF6F0 63%, #EFE6D5 64%, #EFE6D5 71%, transparent 71%, transparent),
+                radial-gradient(circle at 100% 50%, #EFE6D5 5%, #FAF6F0 6%, #FAF6F0 15%, #EFE6D5 16%, #EFE6D5 20%, #FAF6F0 21%, #FAF6F0 30%, #EFE6D5 31%, #EFE6D5 35%, #FAF6F0 36%, #FAF6F0 45%, #EFE6D5 46%, #EFE6D5 49%, transparent 50%, transparent),
+                radial-gradient(circle at 0 50%, #EFE6D5 5%, #FAF6F0 6%, #FAF6F0 15%, #EFE6D5 16%, #EFE6D5 20%, #FAF6F0 21%, #FAF6F0 30%, #EFE6D5 31%, #EFE6D5 35%, #FAF6F0 36%, #FAF6F0 45%, #EFE6D5 46%, #EFE6D5 49%, transparent 50%, transparent);
+            background-size: 64px 32px;
+        }
+
+        /* Latar belakang ukiran gelap untuk Hero & Header */
+        .bg-ukiran-dark {
+            background-color: #241409;
+            background-image: 
+                radial-gradient(#D4AF37 1px, transparent 1px),
+                radial-gradient(#5C3A21 1px, #241409 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        /* Bingkai Emas Klasik */
+        .nusantara-border {
+            border: 2px solid #D4AF37;
+            box-shadow: 0 10px 25px -5px rgba(59, 35, 19, 0.12), inset 0 0 0 4px #FAF6F0, inset 0 0 0 5px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Animasi Bilah Gamelan / Instrumen */
+        .instrument-key {
+            transition: all 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+        .instrument-key:active, .instrument-key.active-hit {
+            transform: translateY(4px) scale(0.97);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.85);
+            filter: brightness(1.15);
+        }
+
+        /* Gelombang Visualizer Audio */
+        @keyframes pulseWave {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+        .wave-bar {
+            transition: height 0.1s ease, background-color 0.2s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EFE6D5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7A4E2D;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5C3A21;
+        }
+
+        /* Transisi Tab */
+        .tab-pane {
+            animation: fadeIn 0.35s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-batik-pattern text-soga-dark font-sans antialiased min-h-screen flex flex-col selection:bg-emas selection:text-soga-deep">
+
+    <!-- Toast Notification Container (Pengganti alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- HERO SECTION -->
+    <header class="bg-ukiran-dark text-lontar relative overflow-hidden border-b-4 border-emas">
+        <!-- Overlay gradien hangat -->
+        <div class="absolute inset-0 bg-gradient-to-b from-soga-deep/90 via-soga-dark/85 to-soga-deep/95"></div>
+        
+        <!-- Ornamen Sudut Dekoratif SVG -->
+        <div class="hidden md:block absolute top-3 left-3 text-emas/40 text-3xl"><i class="fa-solid fa-dharmachakra fa-spin" style="--fa-animation-duration: 45s;"></i></div>
+        <div class="hidden md:block absolute top-3 right-3 text-emas/40 text-3xl"><i class="fa-solid fa-dharmachakra fa-spin" style="--fa-animation-duration: 45s;"></i></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-soga/80 border border-emas/50 text-emas-light text-xs sm:text-sm font-medium tracking-wider uppercase mb-4 shadow-md">
+                <i class="fa-solid fa-compass text-emas"></i>
+                <span>Warisan Agung Dari Sabang Sampai Merauke</span>
+            </div>
+            
+            <h1 class="font-nusantara text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emas-light via-emas to-emas-kunyit drop-shadow-sm tracking-wide leading-tight">
+                Jelajah Budaya Nusantara
+            </h1>
+            
+            <p class="mt-3 max-w-2xl mx-auto text-lontar-dark/90 text-sm sm:text-base md:text-lg font-normal leading-relaxed">
+                Selami kekayaan tradisi Indonesia secara interaktif. Eksplorasi adat 6 wilayah kepulauan besar, mainkan gamelan & alat musik tradisional, lukis motif batik di studio canting, serta uji wawasanmu!
+            </p>
+
+            <!-- Statistik Cepat Nusantara -->
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-center">
+                <div class="bg-soga-deep/70 border border-emas/30 rounded-xl p-2.5 backdrop-blur-sm">
+                    <div class="text-emas font-serif font-bold text-lg sm:text-xl">17.000+</div>
+                    <div class="text-xs text-lontar-dark/80">Pulau & Gugusan</div>
+                </div>
+                <div class="bg-soga-deep/70 border border-emas/30 rounded-xl p-2.5 backdrop-blur-sm">
+                    <div class="text-emas font-serif font-bold text-lg sm:text-xl">1.340+</div>
+                    <div class="text-xs text-lontar-dark/80">Suku Bangsa</div>
+                </div>
+                <div class="bg-soga-deep/70 border border-emas/30 rounded-xl p-2.5 backdrop-blur-sm">
+                    <div class="text-emas font-serif font-bold text-lg sm:text-xl">718</div>
+                    <div class="text-xs text-lontar-dark/80">Bahasa Daerah</div>
+                </div>
+                <div class="bg-soga-deep/70 border border-emas/30 rounded-xl p-2.5 backdrop-blur-sm">
+                    <div class="text-emas font-serif font-bold text-lg sm:text-xl">Bhinneka</div>
+                    <div class="text-xs text-lontar-dark/80">Tunggal Ika</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGASI UTAMA (STICKY) -->
+    <nav class="sticky top-0 z-30 bg-soga-dark/95 backdrop-blur-md border-b-2 border-emas/60 shadow-lg">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-start sm:justify-center overflow-x-auto py-2.5 gap-2 sm:gap-3 no-scrollbar">
+                <button onclick="switchTab('eksplorasi')" id="nav-eksplorasi" class="nav-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all bg-gradient-to-r from-emas to-emas-kunyit text-soga-deep shadow-md">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Eksplorasi Pulau</span>
+                </button>
+                <button onclick="switchTab('musik')" id="nav-musik" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all text-lontar hover:bg-soga border border-transparent hover:border-emas/40">
+                    <i class="fa-solid fa-music"></i>
+                    <span>Studio Musik Tradisional</span>
+                </button>
+                <button onclick="switchTab('batik')" id="nav-batik" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all text-lontar hover:bg-soga border border-transparent hover:border-emas/40">
+                    <i class="fa-solid fa-palette"></i>
+                    <span>Studio Membatik</span>
+                </button>
+                <button onclick="switchTab('kuis')" id="nav-kuis" class="nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all text-lontar hover:bg-soga border border-transparent hover:border-emas/40">
+                    <i class="fa-solid fa-scroll"></i>
+                    <span>Kuis Budaya</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ===================================================================== -->
+        <!-- TAB 1: EKSPLORASI PULAU & PROVINSI                                    -->
+        <!-- ===================================================================== -->
+        <section id="tab-eksplorasi" class="tab-pane">
+            <!-- Header Bagian -->
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-soga-dark flex items-center justify-center gap-3">
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                    <span>Peta & Ensiklopedia Budaya Kepulauan</span>
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                </h2>
+                <p class="text-soga mt-2 text-sm sm:text-base">
+                    Pilih gugusan pulau pada peta interaktif atau gunakan filter wilayah di bawah untuk menelusuri rumah adat, busana, tarian, senjata, alat musik, kuliner, hingga upacara sakral.
+                </p>
+            </div>
+
+            <!-- PETA INTERAKTIF NUSANTARA (SVG STYLIZED ARCHIPELAGO) -->
+            <div class="bg-lontar-light nusantara-border rounded-2xl p-4 sm:p-6 mb-8 relative overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-terakota flex items-center gap-1.5">
+                        <i class="fa-solid fa-hand-pointer"></i> Klik Gugusan Pulau di Peta untuk Memfilter:
+                    </span>
+                    <span id="map-selected-label" class="text-xs font-semibold px-3 py-1 rounded-full bg-emas/20 text-soga-dark border border-emas">
+                        Menampilkan: Semua Wilayah Nusantara
+                    </span>
+                </div>
+
+                <!-- SVG Peta Stilasi 6 Wilayah Besar Indonesia -->
+                <div class="w-full overflow-x-auto">
+                    <svg viewBox="0 0 920 330" class="w-full h-auto min-w-[620px] max-h-[300px] mx-auto drop-shadow-md select-none">
+                        <!-- Latar Laut Lontar Halus -->
+                        <rect x="0" y="0" width="920" height="330" rx="16" fill="#F4ECE1" />
+                        <!-- Garis Khatulistiwa -->
+                        <line x1="0" y1="155" x2="920" y2="155" stroke="#D4AF37" stroke-width="1" stroke-dasharray="6 6" opacity="0.6" />
+                        <text x="15" y="148" fill="#7A4E2D" font-size="10" font-family="sans-serif" opacity="0.7">Garis Khatulistiwa (0°)</text>
+
+                        <!-- 1. SUMATERA -->
+                        <g onclick="filterRegion('Sumatera')" class="cursor-pointer group transition-transform hover:scale-[1.01]">
+                            <path id="map-Sumatera" d="M 45,55 L 95,45 L 165,105 L 220,165 L 210,195 L 175,185 L 110,120 L 55,80 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="135" cy="120" r="5" fill="#FDE68A" />
+                            <text x="105" y="155" fill="#3B2313" font-weight="bold" font-size="13" font-family="serif">SUMATERA</text>
+                        </g>
+
+                        <!-- 2. JAWA -->
+                        <g onclick="filterRegion('Jawa')" class="cursor-pointer group">
+                            <path id="map-Jawa" d="M 225,215 L 315,222 L 395,232 L 390,252 L 300,248 L 222,235 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="310" cy="235" r="5" fill="#FDE68A" />
+                            <text x="285" y="272" fill="#3B2313" font-weight="bold" font-size="13" font-family="serif">JAWA</text>
+                        </g>
+
+                        <!-- 3. BALI & NUSA TENGGARA -->
+                        <g onclick="filterRegion('Bali & Nusa Tenggara')" class="cursor-pointer group">
+                            <path id="map-Bali" d="M 405,238 L 430,238 L 432,252 L 405,250 Z M 442,240 L 472,240 L 472,254 L 442,253 Z M 485,242 L 545,244 L 542,258 L 485,256 Z M 555,252 L 605,245 L 600,264 L 552,266 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="460" cy="247" r="4" fill="#FDE68A" />
+                            <text x="415" y="285" fill="#3B2313" font-weight="bold" font-size="12" font-family="serif">BALI & NUSA TENGGARA</text>
+                        </g>
+
+                        <!-- 4. KALIMANTAN -->
+                        <g onclick="filterRegion('Kalimantan')" class="cursor-pointer group">
+                            <path id="map-Kalimantan" d="M 275,95 L 345,55 L 415,75 L 425,130 L 390,175 L 315,178 L 270,150 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="348" cy="122" r="5" fill="#FDE68A" />
+                            <text x="308" y="196" fill="#3B2313" font-weight="bold" font-size="13" font-family="serif">KALIMANTAN</text>
+                        </g>
+
+                        <!-- 5. SULAWESI -->
+                        <g onclick="filterRegion('Sulawesi')" class="cursor-pointer group">
+                            <path id="map-Sulawesi" d="M 465,105 L 545,98 L 545,112 L 495,120 L 502,145 L 545,148 L 535,165 L 498,162 L 515,205 L 495,212 L 478,175 L 462,208 L 448,200 L 462,145 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="485" cy="150" r="5" fill="#FDE68A" />
+                            <text x="455" y="88" fill="#3B2313" font-weight="bold" font-size="13" font-family="serif">SULAWESI</text>
+                        </g>
+
+                        <!-- 6. MALUKU & PAPUA -->
+                        <g onclick="filterRegion('Maluku & Papua')" class="cursor-pointer group">
+                            <!-- Kepulauan Maluku -->
+                            <path id="map-Maluku" d="M 595,105 L 615,100 L 620,125 L 600,130 Z M 585,155 L 625,152 L 628,168 L 585,168 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <!-- Pulau Papua -->
+                            <path id="map-Papua" d="M 655,125 L 710,120 L 735,145 L 865,155 L 865,245 L 785,242 L 735,205 L 685,180 L 660,152 Z" 
+                                  fill="#7A4E2D" stroke="#D4AF37" stroke-width="2.5" class="transition-colors duration-300 group-hover:fill-terakota" />
+                            <circle cx="765" cy="182" r="5" fill="#FDE68A" />
+                            <text x="680" y="108" fill="#3B2313" font-weight="bold" font-size="13" font-family="serif">MALUKU & PAPUA</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- FILTER WILAYAH & PENCARIAN -->
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
+                <!-- Tombol Filter Wilayah -->
+                <div class="flex flex-wrap gap-2" id="region-filters">
+                    <button onclick="filterRegion('Semua')" data-region="Semua" class="region-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-soga-dark text-emas border border-emas shadow-sm transition-all">
+                        Semua Wilayah
+                    </button>
+                    <button onclick="filterRegion('Sumatera')" data-region="Sumatera" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Sumatera
+                    </button>
+                    <button onclick="filterRegion('Jawa')" data-region="Jawa" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Jawa
+                    </button>
+                    <button onclick="filterRegion('Bali & Nusa Tenggara')" data-region="Bali & Nusa Tenggara" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Bali & Nusa Tenggara
+                    </button>
+                    <button onclick="filterRegion('Kalimantan')" data-region="Kalimantan" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Kalimantan
+                    </button>
+                    <button onclick="filterRegion('Sulawesi')" data-region="Sulawesi" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Sulawesi
+                    </button>
+                    <button onclick="filterRegion('Maluku & Papua')" data-region="Maluku & Papua" class="region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all">
+                        Maluku & Papua
+                    </button>
+                </div>
+
+                <!-- Kolom Pencarian -->
+                <div class="relative min-w-[240px]">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-soga-light text-sm"></i>
+                    <input type="text" id="culture-search" oninput="renderCultureCards()" placeholder="Cari tarian, rumah adat, kuliner..." 
+                           class="w-full pl-9 pr-4 py-2 rounded-xl bg-lontar-light border border-lontar-border focus:border-emas focus:outline-none text-sm text-soga-dark placeholder-soga-light/70">
+                </div>
+            </div>
+
+            <!-- GRID KARTU BUDAYA DAERAH -->
+            <div id="culture-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Diisi secara dinamis melalui JavaScript -->
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- TAB 2: STUDIO SIMULASI GAMELAN & ALAT MUSIK TRADISIONAL               -->
+        <!-- ===================================================================== -->
+        <section id="tab-musik" class="tab-pane hidden">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-soga-dark flex items-center justify-center gap-3">
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                    <span>Studio Gamelan & Instrumen Nusantara</span>
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                </h2>
+                <p class="text-soga mt-2 text-sm sm:text-base">
+                    Sentuh bilah instrumen atau gunakan tombol angka <kbd class="px-2 py-0.5 bg-lontar-dark border border-soga/30 rounded text-xs font-mono">1</kbd> sampai <kbd class="px-2 py-0.5 bg-lontar-dark border border-soga/30 rounded text-xs font-mono">7</kbd> pada keyboard untuk memainkan alunan musik tradisional secara langsung.
+                </p>
+            </div>
+
+            <div class="bg-soga-deep text-lontar rounded-2xl border-2 border-emas shadow-2xl p-5 sm:p-8 relative overflow-hidden">
+                <!-- Kontrol Pilihan Instrumen & Melodi Otomatis -->
+                <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 pb-6 border-b border-emas/30">
+                    <!-- Pemilih Alat Musik -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-emas mb-2 font-semibold">
+                            <i class="fa-solid fa-drum mr-1"></i> Pilih Instrumen Tradisional:
+                        </label>
+                        <div class="flex flex-wrap gap-2" id="instrument-selector">
+                            <button onclick="selectInstrument('gamelan')" data-inst="gamelan" class="inst-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emas text-soga-deep transition-all">
+                                Gamelan Saron (Jawa-Bali)
+                            </button>
+                            <button onclick="selectInstrument('angklung')" data-inst="angklung" class="inst-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-soga text-lontar border border-emas/40 hover:border-emas transition-all">
+                                Angklung (Jawa Barat)
+                            </button>
+                            <button onclick="selectInstrument('kolintang')" data-inst="kolintang" class="inst-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-soga text-lontar border border-emas/40 hover:border-emas transition-all">
+                                Kolintang (Sulawesi Utara)
+                            </button>
+                            <button onclick="selectInstrument('sasando')" data-inst="sasando" class="inst-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-soga text-lontar border border-emas/40 hover:border-emas transition-all">
+                                Sasando (NTT)
+                            </button>
+                            <button onclick="selectInstrument('tifa')" data-inst="tifa" class="inst-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-soga text-lontar border border-emas/40 hover:border-emas transition-all">
+                                Tifa & Gong (Maluku-Papua)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kontrol Melodi Otomatis -->
+                    <div class="bg-soga-dark/90 p-3.5 rounded-xl border border-emas/30 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <div class="text-xs">
+                            <div class="text-emas font-bold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Mainkan Melodi Daerah:</div>
+                            <div class="text-lontar-dark/70" id="now-playing-text">Siap dimainkan</div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="playAutoMelody('gambang')" id="btn-melody-gambang" class="px-3 py-2 rounded-lg bg-terakota hover:bg-terakota-light text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> Gambang Suling
+                            </button>
+                            <button onclick="playAutoMelody('rasasayange')" id="btn-melody-rasa" class="px-3 py-2 rounded-lg bg-terakota hover:bg-terakota-light text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> Rasa Sayange
+                            </button>
+                            <button onclick="stopAutoMelody()" class="px-3 py-2 rounded-lg bg-soga hover:bg-soga-light text-lontar text-xs font-bold border border-emas/30 transition-all" title="Hentikan Melodi">
+                                <i class="fa-solid fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Instrumen & Visualizer Gelombang Suara -->
+                <div class="my-5 flex flex-col md:flex-row items-center justify-between gap-4 bg-soga-dark/60 p-4 rounded-xl border border-emas/20">
+                    <div class="text-center md:text-left">
+                        <h3 id="inst-title" class="font-serif text-xl font-bold text-emas">Gamelan Saron (Pelog & Slendro)</h3>
+                        <p id="inst-desc" class="text-xs sm:text-sm text-lontar-dark/90 mt-1">
+                            Instrumen bilah perunggu khas Jawa dan Bali yang menghasilkan denting resonansi agung dan sakral.
+                        </p>
+                    </div>
+                    <!-- Audio Visualizer Bars -->
+                    <div class="flex items-end justify-center gap-1.5 h-12 px-4 py-2 bg-soga-deep rounded-xl border border-emas/30 min-w-[180px]" id="audio-visualizer">
+                        <div class="wave-bar w-2 bg-emas rounded-full h-2"></div>
+                        <div class="wave-bar w-2 bg-emas-kunyit rounded-full h-3"></div>
+                        <div class="wave-bar w-2 bg-terakota-light rounded-full h-2"></div>
+                        <div class="wave-bar w-2 bg-emas rounded-full h-4"></div>
+                        <div class="wave-bar w-2 bg-emas-kunyit rounded-full h-2"></div>
+                        <div class="wave-bar w-2 bg-emas rounded-full h-3"></div>
+                        <div class="wave-bar w-2 bg-terakota-light rounded-full h-2"></div>
+                        <div class="wave-bar w-2 bg-emas rounded-full h-3"></div>
+                    </div>
+                </div>
+
+                <!-- PANGGUNG BILAH INSTRUMEN INTERAKTIF -->
+                <div class="bg-gradient-to-b from-soga to-soga-dark p-4 sm:p-6 rounded-2xl border-2 border-emas/50 shadow-inner">
+                    <div id="instrument-keys-container" class="grid grid-cols-7 gap-2 sm:gap-4 items-end min-h-[220px] sm:min-h-[260px]">
+                        <!-- Bilah instrumen di-render dinamis oleh JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- TAB 3: STUDIO SIMULASI MEMBATIK & MOTIF NUSANTARA                     -->
+        <!-- ===================================================================== -->
+        <section id="tab-batik" class="tab-pane hidden">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-soga-dark flex items-center justify-center gap-3">
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                    <span>Studio Canting & Wastra Nusantara</span>
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                </h2>
+                <p class="text-soga mt-2 text-sm sm:text-base">
+                    Pilih pola dasar motif wastra tradisional, torehkan malam/pewarna alami Nusantara menggunakan canting digital, celupkan kain (pelodoran), lalu simpan mahakaryamu!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Panel Kontrol Alat Membatik (Kiri - 4 Kolom) -->
+                <div class="lg:col-span-4 bg-lontar-light nusantara-border rounded-2xl p-5 space-y-5">
+                    <!-- 1. Pilih Pola Dasar Motif -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-soga-dark mb-2">
+                            <i class="fa-solid fa-shapes text-terakota mr-1"></i> 1. Pola Dasar Motif (Jipla)
+                        </label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setBatikPattern('kawung')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-soga-dark text-emas border border-emas text-left">
+                                <i class="fa-solid fa-clover mr-1"></i> Batik Kawung
+                            </button>
+                            <button onclick="setBatikPattern('parang')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left">
+                                <i class="fa-solid fa-water mr-1"></i> Batik Parang
+                            </button>
+                            <button onclick="setBatikPattern('megamendung')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left">
+                                <i class="fa-solid fa-cloud mr-1"></i> Mega Mendung
+                            </button>
+                            <button onclick="setBatikPattern('songket')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left">
+                                <i class="fa-solid fa-gem mr-1"></i> Tenun Songket
+                            </button>
+                            <button onclick="setBatikPattern('ulos')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left">
+                                <i class="fa-solid fa-grip-lines mr-1"></i> Tenun Ulos
+                            </button>
+                            <button onclick="setBatikPattern('polos')" class="pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left">
+                                <i class="fa-regular fa-square mr-1"></i> Kain Polos
+                            </button>
+                        </div>
+                        <p id="pattern-philosophy" class="mt-2 text-xs text-soga italic bg-lontar-dark/60 p-2.5 rounded-lg border border-lontar-border">
+                            <strong>Filosofi Kawung:</strong> Melambangkan kesucian hati, pengendalian diri, dan harapan agar manusia selalu berguna bagi sesama.
+                        </p>
+                    </div>
+
+                    <!-- 2. Palet Pewarna Alami Nusantara -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-soga-dark mb-2">
+                            <i class="fa-solid fa-droplet text-terakota mr-1"></i> 2. Pewarna Alami Nusantara
+                        </label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="selectBatikColor('#5C3A21', 'Soga Cokelat (Kulit Kayu Tingi)')" class="color-btn ring-2 ring-offset-2 ring-emas flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#5C3A21] shrink-0 border border-black/20"></span>
+                                <span class="truncate">Soga</span>
+                            </button>
+                            <button onclick="selectBatikColor('#1E3A5F', 'Indigo Nila (Daun Tom)')" class="color-btn flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#1E3A5F] shrink-0 border border-black/20"></span>
+                                <span class="truncate">Indigo</span>
+                            </button>
+                            <button onclick="selectBatikColor('#8B2635', 'Kesumba Merah (Biji Kesumba)')" class="color-btn flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#8B2635] shrink-0 border border-black/20"></span>
+                                <span class="truncate">Kesumba</span>
+                            </button>
+                            <button onclick="selectBatikColor('#D97706', 'Kunyit Emas (Rimpang Kunyit)')" class="color-btn flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#D97706] shrink-0 border border-black/20"></span>
+                                <span class="truncate">Kunyit</span>
+                            </button>
+                            <button onclick="selectBatikColor('#2D5A27', 'Daun Suji (Hijau Zamrud)')" class="color-btn flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#2D5A27] shrink-0 border border-black/20"></span>
+                                <span class="truncate">Suji</span>
+                            </button>
+                            <button onclick="selectBatikColor('#FAF6F0', 'Malam Putih (Lilin Canting)')" class="color-btn flex items-center gap-2 p-2 rounded-xl bg-lontar border border-lontar-border text-xs font-medium">
+                                <span class="w-5 h-5 rounded-full bg-[#FAF6F0] shrink-0 border border-soga/40"></span>
+                                <span class="truncate">Malam</span>
+                            </button>
+                        </div>
+                        <div id="active-dye-label" class="text-[11px] text-soga-light mt-1.5 font-medium">
+                            Pewarna aktif: Soga Cokelat (Kulit Kayu Tingi)
+                        </div>
+                    </div>
+
+                    <!-- 3. Ukuran Mata Canting & Mode Simetri -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-soga-dark mb-1">Ukuran Canting: <span id="brush-size-val">8</span>px</label>
+                            <input type="range" id="brush-size" min="2" max="24" value="8" oninput="document.getElementById('brush-size-val').innerText = this.value" class="w-full accent-terakota">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-soga-dark mb-1">Mode Simetri</label>
+                            <select id="symmetry-mode" class="w-full px-2.5 py-1.5 rounded-lg bg-lontar border border-lontar-border text-xs font-semibold text-soga-dark">
+                                <option value="none">Tunggal (Bebas)</option>
+                                <option value="mirror">Cermin Horizontal</option>
+                                <option value="quad" selected>4 Penjuru (Mandala)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 4. Proses Pelodoran (Celup Warna Latar Kain) -->
+                    <div class="pt-2 border-t border-lontar-border">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-soga-dark mb-2">
+                            <i class="fa-solid fa-fill-drip text-terakota mr-1"></i> 3. Proses Pelodoran (Celup Latar)
+                        </label>
+                        <div class="flex gap-2">
+                            <button onclick="dyeBackground('#FAF6F0')" class="flex-1 py-2 px-2 rounded-lg bg-[#FAF6F0] border border-soga/30 text-soga-dark text-xs font-bold hover:ring-2 ring-emas">
+                                Kain Mori
+                            </button>
+                            <button onclick="dyeBackground('#E6D2B5')" class="flex-1 py-2 px-2 rounded-lg bg-[#E6D2B5] border border-soga/30 text-soga-dark text-xs font-bold hover:ring-2 ring-emas">
+                                Celup Soga
+                            </button>
+                            <button onclick="dyeBackground('#1E293B')" class="flex-1 py-2 px-2 rounded-lg bg-[#1E293B] border border-emas text-emas-light text-xs font-bold hover:ring-2 ring-emas">
+                                Celup Nila
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Kanvas -->
+                    <div class="flex gap-2 pt-2">
+                        <button onclick="clearBatikCanvas()" class="flex-1 py-2.5 px-3 rounded-xl bg-lontar-dark hover:bg-terakota hover:text-white text-soga-dark font-bold text-xs transition-all border border-soga/20">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Ulangi Kain
+                        </button>
+                        <button onclick="downloadBatikArt()" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-soga-dark to-soga text-emas font-bold text-xs shadow-md hover:brightness-110 transition-all border border-emas">
+                            <i class="fa-solid fa-download mr-1"></i> Unduh Karya
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kanvas Membatik (Kanan - 8 Kolom) -->
+                <div class="lg:col-span-8 bg-lontar-light nusantara-border rounded-2xl p-4 sm:p-6 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-3 text-xs text-soga">
+                        <span><i class="fa-solid fa-pen-nib text-terakota mr-1"></i> Goreskan kursor atau jari di atas kain untuk membatik</span>
+                        <span class="font-semibold text-soga-dark">Kanvas Wastra 600 × 450</span>
+                    </div>
+                    <div class="w-full relative rounded-xl overflow-hidden shadow-inner border-2 border-soga/30 bg-[#FAF6F0]">
+                        <canvas id="batik-canvas" class="w-full h-auto block cursor-crosshair touch-none"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- TAB 4: KUIS & TEKA-TEKI BUDAYA NUSANTARA                              -->
+        <!-- ===================================================================== -->
+        <section id="tab-kuis" class="tab-pane hidden">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-soga-dark flex items-center justify-center gap-3">
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                    <span>Uji Wawasan & Gelar Budaya Nusantara</span>
+                    <span class="h-0.5 w-8 bg-emas inline-block"></span>
+                </h2>
+                <p class="text-soga mt-2 text-sm sm:text-base">
+                    Jawab rangkaian pertanyaan seputar tradisi dari Sabang sampai Merauke untuk meraih gelar kehormatan <strong>Empu Budaya Nusantara</strong>!
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-lontar-light nusantara-border rounded-2xl p-6 sm:p-8 shadow-xl">
+                <!-- Status Bar Kuis -->
+                <div id="quiz-header" class="flex flex-wrap items-center justify-between gap-4 pb-5 mb-6 border-b border-lontar-border">
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 rounded-full bg-soga-dark text-emas text-xs font-bold">
+                            Soal <span id="quiz-current-num">1</span> / <span id="quiz-total-num">10</span>
+                        </span>
+                        <span id="quiz-category-badge" class="px-3 py-1 rounded-full bg-emas/20 text-soga-dark text-xs font-semibold border border-emas/40">
+                            Arsitektur Adat
+                        </span>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <!-- Nyawa / Hati -->
+                        <div class="flex items-center gap-1 text-terakota text-base" id="quiz-lives">
+                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <!-- Skor -->
+                        <div class="text-sm font-bold text-soga-dark bg-lontar-dark px-3 py-1 rounded-lg border border-lontar-border">
+                            Skor: <span id="quiz-score" class="text-terakota">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kontainer Pertanyaan Aktif -->
+                <div id="quiz-body">
+                    <h3 id="quiz-question" class="font-serif text-xl sm:text-2xl font-bold text-soga-dark leading-snug mb-6">
+                        Memuat pertanyaan budaya...
+                    </h3>
+
+                    <!-- Pilihan Jawaban -->
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Diisi oleh JS -->
+                    </div>
+
+                    <!-- Kotak Penjelasan Edukatif (Muncul setelah menjawab) -->
+                    <div id="quiz-explanation" class="hidden mt-6 p-4 rounded-xl bg-lontar-dark/80 border-l-4 border-emas text-sm text-soga-dark">
+                        <div class="font-bold text-soga-deep mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-emas-kunyit"></i>
+                            <span id="quiz-feedback-title">Tahukah Kamu?</span>
+                        </div>
+                        <p id="quiz-explanation-text" class="leading-relaxed"></p>
+                        <div class="mt-4 text-right">
+                            <button onclick="nextQuizQuestion()" class="px-5 py-2.5 rounded-xl bg-soga-dark hover:bg-soga text-emas font-bold text-xs sm:text-sm transition-all shadow-md">
+                                Lanjut Soal Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layar Hasil Akhir Kuis -->
+                <div id="quiz-result" class="hidden text-center py-6">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-emas to-emas-kunyit text-soga-deep flex items-center justify-center text-4xl shadow-lg mb-4 border-4 border-soga-dark">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-widest text-terakota font-bold">Anugerah Gelar Kebudayaan</div>
+                    <h3 id="quiz-rank-title" class="font-nusantara text-2xl sm:text-3xl font-black text-soga-dark mt-1">
+                        Empu Budaya Nusantara
+                    </h3>
+                    <p id="quiz-rank-desc" class="text-soga text-sm sm:text-base max-w-lg mx-auto mt-2">
+                        Luar biasa! Pemahamanmu tentang kekayaan tradisi Nusantara sangat mendalam.
+                    </p>
+
+                    <div class="my-6 inline-flex items-center gap-6 bg-lontar-dark px-6 py-4 rounded-2xl border border-emas">
+                        <div>
+                            <div class="text-xs text-soga">Skor Akhir</div>
+                            <div id="quiz-final-score" class="text-2xl font-black text-terakota">100</div>
+                        </div>
+                        <div class="h-8 w-px bg-soga/20"></div>
+                        <div>
+                            <div class="text-xs text-soga">Jawaban Benar</div>
+                            <div id="quiz-final-correct" class="text-2xl font-black text-soga-dark">10/10</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="restartQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-soga-dark to-soga text-emas font-bold text-sm shadow-lg hover:brightness-110 transition-all border border-emas">
+                            <i class="fa-solid fa-rotate-right mr-2"></i> Mainkan Kuis Lagi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL DETAIL BUDAYA DAERAH -->
+    <div id="culture-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-soga-deep/80 backdrop-blur-sm">
+        <div class="bg-lontar-light nusantara-border rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-[fadeIn_0.25s_ease-out]">
+            <!-- Header Modal -->
+            <div class="sticky top-0 z-10 bg-soga-dark text-lontar px-6 py-4 border-b-2 border-emas flex items-center justify-between">
+                <div>
+                    <span id="modal-region-tag" class="text-xs font-bold uppercase tracking-wider text-emas">Wilayah Sumatera</span>
+                    <h3 id="modal-title" class="font-serif text-xl sm:text-2xl font-bold text-white">Budaya Minangkabau (Sumatera Barat)</h3>
+                </div>
+                <button onclick="closeCultureModal()" class="w-9 h-9 rounded-full bg-soga hover:bg-terakota text-lontar flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Isi Modal -->
+            <div class="p-6 space-y-6">
+                <!-- Ringkasan & Filosofi -->
+                <div class="bg-lontar-dark/70 p-4 rounded-xl border border-emas/40">
+                    <p id="modal-summary" class="text-sm sm:text-base text-soga-dark leading-relaxed"></p>
+                    <div class="mt-3 pt-3 border-t border-soga/15 flex items-start gap-2.5 text-xs sm:text-sm text-terakota font-medium">
+                        <i class="fa-solid fa-quote-left mt-0.5 text-emas-kunyit"></i>
+                        <span id="modal-philosophy"></span>
+                    </div>
+                </div>
+
+                <!-- Grid 7 Unsur Budaya Tradisional -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="modal-elements-grid">
+                    <!-- Diisi dinamis oleh JS -->
+                </div>
+
+                <!-- Fakta Unik -->
+                <div class="bg-soga-deep text-lontar p-4 rounded-xl border border-emas flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emas/20 text-emas flex items-center justify-center shrink-0 text-lg">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-emas">Fakta Unik Budaya</div>
+                        <p id="modal-funfact" class="text-xs sm:text-sm text-lontar-dark/95 mt-0.5"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-soga-deep text-lontar-dark/80 border-t-4 border-emas mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+                <div class="font-nusantara text-lg font-bold text-emas">Jelajah Budaya Nusantara</div>
+                <p class="text-xs mt-1">Melestarikan warisan leluhur Indonesia melalui teknologi edukasi interaktif.</p>
+            </div>
+            <div class="text-xs text-emas-light/80 flex items-center gap-2">
+                <i class="fa-solid fa-heart text-terakota-light"></i>
+                <span>Bhinneka Tunggal Ika — Tan Hana Dharma Mangrwa</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT LENGKAP (DATA BUDAYA, AUDIO SYNTH, CANVAS BATIK & KUIS)        -->
+    <!-- ========================================================================= -->
+    <script>
+        /* =========================================================================
+           1. DATABASE LENGKAP KEBUDAYAAN TRADISIONAL NUSANTARA (6 WILAYAH BESAR)
+           ========================================================================= */
+        const nusantaraCultures = [
+            // --- SUMATERA ---
+            {
+                id: 'aceh',
+                region: 'Sumatera',
+                province: 'Aceh (Serambi Mekkah)',
+                title: 'Budaya Aceh & Gayo',
+                icon: 'fa-mosque',
+                summary: 'Kebudayaan Aceh merupakan perpaduan harmonis antara nilai-nilai Islam yang kuat dengan adat istiadat Melayu-Austronesia yang menjunjung tinggi kehormatan, kesenian syair, dan semangat kepahlawanan.',
+                philosophy: 'Adat bak Po Teumeureuhom, Hukom bak Syiah Kuala (Adat bersendikan kekuasaan yang adil, hukum bersendikan syariat).',
+                elements: {
+                    rumah: 'Rumoh Aceh (Rumah panggung kayu berukir sulur tanpa paku dengan atap daun rumbia)',
+                    pakaian: 'Ulee Balang (Linto Baro untuk pria & Daro Baro untuk wanita dengan sulaman benang emas)',
+                    tarian: 'Tari Saman (Tari seribu tangan dari Gayo yang diakui UNESCO), Tari Seudati & Ratoh Jaroe',
+                    senjata: 'Rencong (Belati khas Aceh berbentuk huruf Arab Bismillah sebagai simbol keberanian)',
+                    musik: 'Rapai (Rebana besar), Serune Kalee (Alat musik tiup), dan Canang',
+                    makanan: 'Mie Aceh, Kuah Pliek U, Ayam Tangkap, dan Kopi Gayo',
+                    upacara: 'Peusijuek (Upacara tepung tawar memohon keselamatan, syukur, dan kedamaian)'
+                },
+                funfact: 'Tari Saman dimainkan tanpa iringan alat musik sama sekali; seluruh ritme tercipta dari tepukan dada, paha, dan syair vokal penarinya!'
+            },
+            {
+                id: 'sumut',
+                region: 'Sumatera',
+                province: 'Sumatera Utara (Tanah Batak & Nias)',
+                title: 'Budaya Batak & Nias',
+                icon: 'fa-landmark',
+                summary: 'Sumatera Utara kaya akan tradisi suku Batak (Toba, Karo, Simalungun, Mandailing, Pakpak, Angkola) dengan sistem kekerabatan Dalihan Na Tolu, serta budaya megalitik yang masih hidup di Kepulauan Nias.',
+                philosophy: 'Dalihan Na Tolu: Somba Marhula-hula, Elek Marboru, Manat Mardongan Tubu (Hormat kepada keluarga istri, mengayomi pihak putri, dan bijaksana kepada saudara semarga).',
+                elements: {
+                    rumah: 'Rumah Bolon (Batak Toba dengan atap melengkung bagai pelana kuda) & Omo Sebua (Nias tahan gempa)',
+                    pakaian: 'Kain Tenun Ulos (Ulos Ragidup, Sadum, Sibolang) dengan hiasan kepala Sortali',
+                    tarian: 'Tari Tor-Tor (Batak) & Tari Perang / Fahombo Lompat Batu (Nias)',
+                    senjata: 'Piso Surit, Piso Gaja Dompak, dan Balato (Pedang Nias)',
+                    musik: 'Gondang Sabangunan, Taganing, Hasapi (Kecapi Batak), dan Aramba',
+                    makanan: 'Arsik Ikan Mas, Saksang, Daun Ubi Tumbuk, dan Bika Ambon',
+                    upacara: 'Mangulosi (Pemberian kain Ulos sebagai lambang restu dan kasih sayang) & Fahombo (Lompat Batu Nias)'
+                },
+                funfact: 'Tradisi Fahombo di Nias mengharuskan pemuda melompati susunan batu setinggi lebih dari 2 meter sebagai bukti kedewasaan dan kesiapan membela desa.'
+            },
+            {
+                id: 'sumbar',
+                region: 'Sumatera',
+                province: 'Sumatera Barat (Ranah Minang)',
+                title: 'Budaya Minangkabau',
+                icon: 'fa-crown',
+                summary: 'Masyarakat Minangkabau terkenal di dunia sebagai penganut sistem kekerabatan matrilineal terbesar, di mana garis keturunan dan warisan harta pusaka diturunkan melalui pihak ibu.',
+                philosophy: 'Adat Basandi Syarak, Syarak Basandi Kitabullah (Adat bersendikan agama, agama bersendikan Kitab Suci) & Alam Takambang Jadi Guru.',
+                elements: {
+                    rumah: 'Rumah Gadang (Beratap gonjong runcing menyerupai tanduk kerbau dengan lumbung Rangkiang)',
+                    pakaian: 'Bundo Kanduang (Tengkuluk tanduk kerbau, baju kurung sulam emas, dan kain songket)',
+                    tarian: 'Tari Piring, Tari Pasambahan, dan Randai (Teater rakyat berpadu silat Silek)',
+                    senjata: 'Karih (Keris Minang), Kurambiak (Kerambit berbentuk kuku harimau), dan Ruduih',
+                    musik: 'Talempong, Saluang (Suling bambu khas Minang), dan Gandang Tabuik',
+                    makanan: 'Rendang (Hidangan terlezat dunia), Sate Padang, Dendeng Balado, dan Lamang Tapai',
+                    upacara: 'Batagak Pangulu (Pengangkatan pemimpin adat) & Tabuik di Pariaman'
+                },
+                funfact: 'Atap Rumah Gadang yang melengkung tajam ke atas (gonjong) tidak menggunakan paku besi melainkan pasak kayu sehingga lentur meredam guncangan gempa.'
+            },
+            {
+                id: 'sumsel',
+                region: 'Sumatera',
+                province: 'Sumatera Selatan & Melayu',
+                title: 'Budaya Palembang & Sriwijaya',
+                icon: 'fa-ship',
+                summary: 'Mewarisi kejayaan Kemaharajaan Maritim Sriwijaya dan Kesultanan Palembang Darussalam, budaya Sumatera Selatan memancarkan kemewahan wastra emas dan keramahan masyarakat tepian Sungai Musi.',
+                philosophy: 'Batanghari Sembilan: Semangat persatuan sembilan aliran sungai besar yang bermuara ke Sungai Musi.',
+                elements: {
+                    rumah: 'Rumah Limas (Rumah panggung bertingkat-tingkat bernama Bengkilas sesuai filosofi sosial)',
+                    pakaian: 'Aesan Gede & Aesan Paksangko (Busana keemasan warisan keagungan Sriwijaya)',
+                    tarian: 'Tari Gending Sriwijaya (Tari penyambutan tamu agung) & Tari Tanggai',
+                    senjata: 'Trisula, Keris Palembang, dan Tombak',
+                    musik: 'Akordeon Melayu, Gendang Melayu, dan Gambus',
+                    makanan: 'Pempek Palembang, Tekwan, Model, Pindang Patin, dan Kue Maksuba',
+                    upacara: 'Sedekah Rame & Lomba Bidar Tradisional di Sungai Musi'
+                },
+                funfact: 'Kain Songket Palembang dijuluki sebagai "Ratu Segala Kain" karena ditenun menggunakan benang emas asli yang melambangkan kemakmuran.'
+            },
+
+            // --- JAWA ---
+            {
+                id: 'jabar',
+                region: 'Jawa',
+                province: 'Jawa Barat & Banten (Tatar Sunda)',
+                title: 'Budaya Sunda & Baduy',
+                icon: 'fa-leaf',
+                summary: 'Budaya Sunda menjunjung tinggi keselarasan hidup dengan alam pegunungan Parahyangan serta tata krama yang lembut, sementara masyarakat Baduy di Banten menjaga kemurnian adat leluhur.',
+                philosophy: 'Silih Asah, Silih Asih, Silih Asuh (Saling mencerdaskan, saling mengasihi, dan saling menjaga).',
+                elements: {
+                    rumah: 'Imah Julang Ngapak (Atap melebar seperti sayap burung) & Sulah Nyanda (Rumah adat Baduy)',
+                    pakaian: 'Kebaya Sunda, Pangsi, Iket Kepala Sunda, serta Tenun Baduy',
+                    tarian: 'Tari Jaipong, Tari Merak, Tari Topeng Cirebon, dan Debus Banten',
+                    senjata: 'Kujang (Senjata pusaka Sunda berbentuk melengkung unik) & Golok Ciomas',
+                    musik: 'Angklung (Warisan Budaya Dunia UNESCO), Kacapi Suling, Calung, dan Degung',
+                    makanan: 'Nasi Liwet Sunda, Karedok, Peuyeum Bandung, Surabi, dan Sate Bandeng',
+                    upacara: 'Seren Taun (Upacara syukur panen padi masyarakat agraris Sunda) & Seba Baduy'
+                },
+                funfact: 'Angklung terbuat dari bambu hitam pilihan dan setiap satu instrumen hanya menghasilkan satu nada, sehingga membutuhkan kerja sama tim untuk memainkan melodi.'
+            },
+            {
+                id: 'jateng_diy',
+                region: 'Jawa',
+                province: 'Jawa Tengah & DI Yogyakarta',
+                title: 'Budaya Keraton Mataram & Jawa',
+                icon: 'fa-gopuram',
+                summary: 'Pusat peradaban keraton Surakarta dan Yogyakarta yang melestarikan seni halus berfilosofi tinggi: mulai dari seni wayang kulit, gamelan ageng, batik tulis, hingga tata krama unggah-ungguh.',
+                philosophy: 'Memayu Hayuning Bawana (Memperindah keindahan dunia dan menjaga harmoni semesta) & Manunggaling Kawula Gusti.',
+                elements: {
+                    rumah: 'Rumah Joglo (Ditopang 4 tiang utama Soko Guru dengan atap tajug/limasan berukir)',
+                    pakaian: 'Beskap, Surjan, Blangkon, Kebaya Kutubaru, dan Kain Jarik Batik',
+                    tarian: 'Tari Bedhaya Ketawang (Sakral keraton), Tari Gambyong, dan Wayang Orang',
+                    senjata: 'Keris (Pusaka ber-pamor yang diakui UNESCO sebagai Masterpiece of Oral and Intangible Heritage)',
+                    musik: 'Gamelan Jawa (Bonang, Saron, Kendang, Gong, Gender, Rebab, Siter)',
+                    makanan: 'Gudeg Jogja, Nasi Liwet Solo, Lumpia Semarang, Soto Kudus, dan Wedang Ronde',
+                    upacara: 'Sekaten, Grebeg Maulud, Ruwatan, dan Labuhan Parangkusumo'
+                },
+                funfact: 'Pamor pada bilah Keris Jawa dibuat dengan teknik penempaan lipat antara besi dan batu meteorit (nikel) yang menghasilkan pola artistik alami.'
+            },
+            {
+                id: 'jatim',
+                region: 'Jawa',
+                province: 'Jawa Timur & Madura',
+                title: 'Budaya Jawa Timuran, Madura & Tengger',
+                icon: 'fa-fire-flame-curved',
+                summary: 'Jawa Timur memiliki spektrum budaya yang dinamis dan ekspresif, mencakup tradisi Arekan, Mataraman, Osing Banyuwangi, Suku Tengger di Bromo, hingga masyarakat bahari Madura.',
+                philosophy: 'Jer Basuki Mawa Beya (Setiap keberhasilan dan kebahagiaan membutuhkan pengorbanan dan kerja keras).',
+                elements: {
+                    rumah: 'Rumah Joglo Situbondo, Tanean Lanjhang (Madura), dan Rumah Adat Osing',
+                    pakaian: 'Pesa’an (Baju garis merah-putih khas Madura dengan Odheng) & Baju Cak dan Ning',
+                    tarian: 'Reog Ponorogo (Topeng Singa Barong raksasa), Tari Gandrung Banyuwangi, dan Tari Remo',
+                    senjata: 'Celurit (Madura) & Bionet / Keris Jatim',
+                    musik: 'Gamelan Banyuwangi (Angklung Paglak), Saronen (Madura), dan Kendang Kempul',
+                    makanan: 'Rawon (Sup daging hitam kluwek), Rujak Cingur, Soto Lamongan, dan Sate Madura',
+                    upacara: 'Yadnya Kasada (Suku Tengger di Gunung Bromo), Karapan Sapi, dan Seblang'
+                },
+                funfact: 'Topeng Dadak Merak pada kesenian Reog Ponorogo memiliki berat mencapai 50–60 kg dan diangkat oleh penari hanya dengan kekuatan gigitan pada kayu penggigit!'
+            },
+
+            // --- BALI & NUSA TENGGARA ---
+            {
+                id: 'bali',
+                region: 'Bali & Nusa Tenggara',
+                province: 'Bali (Pulau Dewata)',
+                title: 'Budaya Bali & Tri Hita Karana',
+                icon: 'fa-om',
+                summary: 'Bali memadukan seni, spiritualitas Hindu Dharma, dan kehidupan komunal Banjar dalam setiap aspek keseharian, menjadikan pulau ini museum hidup kebudayaan Nusantara.',
+                philosophy: 'Tri Hita Karana: Tiga penyebab kebahagiaan melalui harmoni hubungan manusia dengan Tuhan (Parahyangan), sesama (Pawongan), dan alam (Palemahan).',
+                elements: {
+                    rumah: 'Gapura Candi Bentar & Bale Daja dengan tata ruang Asta Kosala Kosali',
+                    pakaian: 'Payas Agung, Kebaya Bali, Kamen, Saput Poleng (hitam-putih), dan Udeng',
+                    tarian: 'Tari Kecak, Tari Pendet, Tari Legong Keraton, dan Tari Barong',
+                    senjata: 'Keris Bali (Berukuran lebih besar dan berhias batu permata)',
+                    musik: 'Gamelan Gong Kebyar, Rindik (Bambu), dan Ceng-Ceng',
+                    makanan: 'Ayam Betutu, Sate Lilit, Lawar, Nasi Jinggo, dan Sambal Matah',
+                    upacara: 'Ngaben (Upacara kremasi suci), Nyepi, Galungan, Kuningan, dan Melasti'
+                },
+                funfact: 'Sistem irigasi tradisional Subak di Bali telah berusia lebih dari 1.000 tahun dan diakui UNESCO sebagai Warisan Budaya Dunia.'
+            },
+            {
+                id: 'ntb_ntt',
+                region: 'Bali & Nusa Tenggara',
+                province: 'Nusa Tenggara Barat & Timur',
+                title: 'Budaya Sasak, Bima, Sumba & Flores',
+                icon: 'fa-sun',
+                summary: 'Kepulauan Nusa Tenggara menyimpan kekayaan tenun ikat kelas dunia, tradisi megalitik Sumba, kesatria Pasola, hingga keunikan kampung adat Wae Rebo di pegunungan Flores.',
+                philosophy: 'Lomboq Mirah Sasak Adi (Kejujuran adalah permata kemuliaan utama bagi masyarakat Sasak).',
+                elements: {
+                    rumah: 'Mbaru Niang (Rumah kerucut Wae Rebo Flores), Uma Lengge (Bima), dan Bale Lumbung (Sasak)',
+                    pakaian: 'Tenun Ikat Sumba, Kain Songket Sasak, dan Topi Ti’i Langga (Pulau Rote)',
+                    tarian: 'Tari Caci (Tari cambuk kesatria Manggarai), Tari Likurai, dan Gendang Beleq',
+                    senjata: 'Sundu (Keris lurus NTT) & Parang Sumba',
+                    musik: 'Sasando (Alat musik petik berdawai dari daun lontar asal Rote) & Gendang Beleq',
+                    makanan: 'Ayam Taliwang, Plecing Kangkung, Se’i Sapi NTT, dan Jagung Bose',
+                    upacara: 'Pasola (Perang ketangkasan berkuda di Sumba), Bau Nyale (Lombok), dan Reba'
+                },
+                funfact: 'Sasando dari Pulau Rote menggunakan wadah resonansi dari anyaman daun lontar yang bentuknya menyerupai kipas setengah lingkaran.'
+            },
+
+            // --- KALIMANTAN ---
+            {
+                id: 'kalimantan',
+                region: 'Kalimantan',
+                province: 'Kalimantan (Borneo)',
+                title: 'Budaya Dayak, Banjar & Kutai',
+                icon: 'fa-feather-pointed',
+                summary: 'Bumi Borneo menyatukan kearifan ekologis suku Dayak di pedalaman hutan hujan tropis dengan budaya sungai Kesultanan Banjar dan Kutai Kartanegara yang merupakan kerajaan tertua di Indonesia.',
+                philosophy: 'Adil Ka’ Talino, Bacuramin Ka’ Saruga, Basengat Ka’ Jubata (Adil terhadap sesama manusia, bercermin ke surga, bernapas kepada Tuhan).',
+                elements: {
+                    rumah: 'Rumah Betang / Lamin (Rumah panjang komunal suku Dayak) & Rumah Bubungan Tinggi (Banjar)',
+                    pakaian: 'King Baba & King Bibinge (Kulit kayu & manik-manik Dayak) serta Pengantin Bagajah Gamuling (Banjar)',
+                    tarian: 'Tari Hudoq (Topeng burung enggang), Tari Gantar, Tari Kancet Papatai, dan Tari Baksa Kembang',
+                    senjata: 'Mandau (Parang pusaka Dayak berukir), Sumpit (Sumpitan), dan Perisai Talawang',
+                    musik: 'Sape’ (Kecapi petik khas Dayak dengan alunan meditatif), Panting (Banjar), dan Sampek',
+                    makanan: 'Soto Banjar, Ayam Cincane, Juhu Singkah (Umbut rotan), dan Amplang',
+                    upacara: 'Tiwah (Upacara sakral mengantar arwah leluhur Dayak Ngaju), Erau Kutai, dan Pasar Terapung'
+                },
+                funfact: 'Rumah Betang suku Dayak dapat mencapai panjang lebih dari 100 meter dan dihuni puluhan keluarga secara rukun dalam satu atap.'
+            },
+
+            // --- SULAWESI ---
+            {
+                id: 'sulsel_sulbar',
+                region: 'Sulawesi',
+                province: 'Sulawesi Selatan & Barat',
+                title: 'Budaya Bugis, Makassar & Toraja',
+                icon: 'fa-anchor',
+                summary: 'Pelaut ulung Bugis-Makassar penjelajah samudra dengan kapal Pinisi berdampingan dengan tradisi leluhur Tana Toraja yang megah di dataran tinggi pegunungan.',
+                philosophy: 'Siri’ na Pacce (Menjaga harga diri/kehormatan serta solidaritas empati mendalam terhadap penderitaan sesama).',
+                elements: {
+                    rumah: 'Tongkonan (Rumah adat Toraja beratap melengkung seperti perahu) & Bola Soba (Bugis)',
+                    pakaian: 'Baju Bodo (Salah satu busana tertua di dunia), Jas Tutup, dan Sarung Sutera Sengkang',
+                    tarian: 'Tari Pakarena, Tari Paduppa, dan Tari Ma’gellu (Toraja)',
+                    senjata: 'Badik (Belati khas Bugis-Makassar yang menjadi simbol kehormatan diri)',
+                    musik: 'Kecaping (Kecapi perahu Bugis), Gandrang Bulo, dan Pa’pompang (Musik bambu Toraja)',
+                    makanan: 'Coto Makassar, Konro Bakar, Pallubasa, Kapurung, dan Pisang Epe',
+                    upacara: 'Rambu Solo’ (Upacara pemakaman adat Toraja), Ma’nene, dan Mappalili'
+                },
+                funfact: 'Seni pembuatan Kapal Pinisi dari Sulawesi Selatan telah ditetapkan oleh UNESCO sebagai Warisan Budaya Takbenda Dunia sejak tahun 2017.'
+            },
+            {
+                id: 'sulut_sulteng',
+                region: 'Sulawesi',
+                province: 'Sulawesi Utara, Tengah & Tenggara',
+                title: 'Budaya Minahasa, Gorontalo & Buton',
+                icon: 'fa-mountain-sun',
+                summary: 'Bagian utara hingga tenggara Sulawesi memancarkan semangat persaudaraan yang hangat, seni musik perkusi kayu yang harmonis, serta tradisi bahari Wakatobi dan Kesultanan Buton.',
+                philosophy: 'Si Tou Timou Tumou Tou (Manusia hidup untuk memanusiakan dan menghidupkan sesama manusia — Sam Ratulangi).',
+                elements: {
+                    rumah: 'Walewangko (Rumah panggung Minahasa), Dulohupa (Gorontalo), dan Banua Tada (Buton)',
+                    pakaian: 'Laku Tepu (Sangihe), Biliu & Makuta (Gorontalo), serta Kabuenga',
+                    tarian: 'Tari Kabasaran (Tari keprajuritan Minahasa), Tari Maengket, dan Tari Saronde',
+                    senjata: 'Pedang Bara Sangihe, Pasatimpo (Sulawesi Tengah), dan Keris Buton',
+                    musik: 'Kolintang (Alat musik pukul bilah kayu khas Minahasa) & Polopalo',
+                    makanan: 'Tinutuan (Bubur Manado), Ayam Rica-Rica, Binte Biluhuta (Gorontalo), dan Sinonggi',
+                    upacara: 'Tulude (Sangihe-Talaud), Mapalus (Tradisi gotong royong Minahasa), dan Karia'
+                },
+                funfact: 'Benteng Keraton Buton di Baubau merupakan benteng terluas di dunia menurut Guinness World Records dengan keliling dinding batu kapur mencapai 2,7 kilometer.'
+            },
+
+            // --- MALUKU & PAPUA ---
+            {
+                id: 'maluku',
+                region: 'Maluku & Papua',
+                province: 'Maluku & Maluku Utara (Kepulauan Rempah)',
+                title: 'Budaya Maluku & Ternate-Tidore',
+                icon: 'fa-compass',
+                summary: 'Kepulauan Maluku yang legendaris sebagai penghasil cengkih dan pala dunia memiliki ikatan persaudaraan lintas agama dan adat Pela Gandong yang sangat kuat.',
+                philosophy: 'Ale Rasa Beta Rasa, Potong di Kuku Rasa di Daging (Apa yang engkau rasakan kurasakan juga; kita semua bersaudara).',
+                elements: {
+                    rumah: 'Baileo (Balai pertemuan adat Maluku yang terbuka tanpa dinding sebagai simbol keterbukaan) & Sasadu',
+                    pakaian: 'Baju Cele (Kain bergaris kotak merah-putih khas Ambon) & Kimun Gia (Ternate)',
+                    tarian: 'Tari Cakalele (Tari perang heroik), Tari Lensong, dan Tari Soya-Soya',
+                    senjata: 'Parang Salawaku (Parang dan perisai berhias kerang mutiara)',
+                    musik: 'Tifa Maluku, Totobuang (Gamelan gong kecil Maluku), dan Ukulele',
+                    makanan: 'Papeda Kuah Kuning, Ikan Asar, Kohu-Kohu, dan Nasi Lapola',
+                    upacara: 'Panas Pela (Upacara mempererat sumpah persaudaraan antarnegeri), Bambu Gila, dan Kololi Kie'
+                },
+                funfact: 'Tradisi Pela Gandong menyatukan dua atau lebih desa (negeri) dari latar belakang berbeda untuk saling membantu layaknya saudara kandung selamanya.'
+            },
+            {
+                id: 'papua',
+                region: 'Maluku & Papua',
+                province: 'Papua (Bumi Cenderawasih)',
+                title: 'Budaya Papua & Pegunungan Tengah',
+                icon: 'fa-dove',
+                summary: 'Tanah Papua merupakan rumah bagi ratusan suku bangsa dengan keragaman bahasa dan tradisi yang luar biasa, dari pesisir Raja Ampat, Teluk Cenderawasih, Asmat, hingga Lembah Baliem.',
+                philosophy: 'Satu Tungku Tiga Batu (Filosofi kerukunan dan persaudaraan di tanah Papua yang menopang kehidupan bersama).',
+                elements: {
+                    rumah: 'Honai (Rumah bulat beratap jerami di pegunungan untuk menahan dingin) & Kariwari (Rumah pesisir)',
+                    pakaian: 'Koteka / Holim, Rok Rumbai, dan Noken (Tas rajut serat kulit kayu warisan UNESCO)',
+                    tarian: 'Tari Yospan (Yosim Pancar), Tari Perang Papua, dan Tari Musyoh',
+                    senjata: 'Panah & Busur Tradisional, Tombak, serta Pisau Belati Tulang Kasuari',
+                    musik: 'Tifa (Alat musik pukul berukir khas Papua), Triton (Terompet kerang), dan Pikon',
+                    makanan: 'Papeda, Ikan Bungkus Papua, Ulat Sagu, dan Udang Selingkuh Wamena',
+                    upacara: 'Bakar Batu (Barapen — upacara memasak bersama sebagai simbol syukur dan perdamaian) & Festival Lembah Baliem'
+                },
+                funfact: 'Noken dari Papua diakui UNESCO sebagai Warisan Budaya Takbenda karena cara membawanya yang unik menggunakan kepala serta filosofinya sebagai simbol kehidupan dan perdamaian.'
+            }
+        ];
+
+        /* =========================================================================
+           2. LOGIKA EKSPLORASI PULAU, FILTER & MODAL DETAIL
+           ========================================================================= */
+        let currentRegion = 'Semua';
+
+        function filterRegion(region) {
+            currentRegion = region;
+            document.getElementById('map-selected-label').innerText = `Menampilkan: ${region === 'Semua' ? 'Semua Wilayah Nusantara' : 'Wilayah ' + region}`;
+
+            // Perbarui gaya tombol filter
+            document.querySelectorAll('.region-btn').forEach(btn => {
+                if (btn.dataset.region === region) {
+                    btn.className = 'region-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-soga-dark text-emas border border-emas shadow-sm transition-all';
+                } else {
+                    btn.className = 'region-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-lontar-light text-soga-dark border border-lontar-border hover:border-emas transition-all';
+                }
+            });
+
+            // Sorot SVG Pulau pada Peta
+            const mapIds = {
+                'Sumatera': ['map-Sumatera'],
+                'Jawa': ['map-Jawa'],
+                'Bali & Nusa Tenggara': ['map-Bali'],
+                'Kalimantan': ['map-Kalimantan'],
+                'Sulawesi': ['map-Sulawesi'],
+                'Maluku & Papua': ['map-Maluku', 'map-Papua']
+            };
+
+            Object.values(mapIds).flat().forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.setAttribute('fill', '#7A4E2D');
+            });
+
+            if (region !== 'Semua' && mapIds[region]) {
+                mapIds[region].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.setAttribute('fill', '#8B2635'); // Merah Terakota aktif
+                });
+            }
+
+            renderCultureCards();
+        }
+
+        function renderCultureCards() {
+            const grid = document.getElementById('culture-grid');
+            const query = document.getElementById('culture-search').value.toLowerCase().trim();
+
+            const filtered = nusantaraCultures.filter(item => {
+                const matchRegion = currentRegion === 'Semua' || item.region === currentRegion;
+                const searchableText = `${item.province} ${item.title} ${item.summary} ${Object.values(item.elements).join(' ')}`.toLowerCase();
+                const matchQuery = !query || searchableText.includes(query);
+                return matchRegion && matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-lontar-light rounded-2xl border border-lontar-border">
+                        <i class="fa-solid fa-compass text-4xl text-emas mb-3"></i>
+                        <h3 class="font-serif text-xl font-bold text-soga-dark">Budaya Tidak Ditemukan</h3>
+                        <p class="text-sm text-soga mt-1">Coba gunakan kata kunci lain atau pilih "Semua Wilayah".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <article class="bg-lontar-light nusantara-border rounded-2xl p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-1 rounded-lg bg-soga-dark text-emas text-[11px] font-bold uppercase tracking-wider">
+                                ${item.region}
+                            </span>
+                            <div class="w-9 h-9 rounded-full bg-emas/20 text-soga-dark flex items-center justify-center border border-emas/40 group-hover:bg-terakota group-hover:text-white transition-colors">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-semibold text-terakota mb-0.5">${item.province}</div>
+                        <h3 class="font-serif text-xl font-bold text-soga-dark group-hover:text-terakota transition-colors">
+                            ${item.title}
+                        </h3>
+                        
+                        <p class="text-xs sm:text-sm text-soga mt-2.5 line-clamp-3 leading-relaxed">
+                            ${item.summary}
+                        </p>
+
+                        <!-- Cuplikan 3 Unsur Adat -->
+                        <div class="mt-4 pt-3 border-t border-lontar-border space-y-1.5 text-xs">
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-house-chimney text-soga-light mt-0.5 w-4"></i>
+                                <span class="text-soga-dark truncate"><strong>Rumah:</strong> ${item.elements.rumah}</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-person-rays text-soga-light mt-0.5 w-4"></i>
+                                <span class="text-soga-dark truncate"><strong>Tari:</strong> ${item.elements.tarian}</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-utensils text-soga-light mt-0.5 w-4"></i>
+                                <span class="text-soga-dark truncate"><strong>Kuliner:</strong> ${item.elements.makanan}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="openCultureModal('${item.id}')" class="mt-5 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-soga-dark to-soga hover:from-terakota hover:to-terakota-light text-emas hover:text-white font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm">
+                        <span>Telusuri 7 Unsur Budaya</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </button>
+                </article>
+            `).join('');
+        }
+
+        function openCultureModal(id) {
+            const item = nusantaraCultures.find(c => c.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-region-tag').innerText = `${item.region} • ${item.province}`;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-summary').innerText = item.summary;
+            document.getElementById('modal-philosophy').innerText = item.philosophy;
+            document.getElementById('modal-funfact').innerText = item.funfact;
+
+            const elementMeta = [
+                { key: 'rumah', label: 'Rumah Adat', icon: 'fa-house-chimney' },
+                { key: 'pakaian', label: 'Pakaian Adat', icon: 'fa-shirt' },
+                { key: 'tarian', label: 'Tarian Tradisional', icon: 'fa-person-dancing' },
+                { key: 'senjata', label: 'Senjata Tradisional', icon: 'fa-shield-halved' },
+                { key: 'musik', label: 'Alat Musik', icon: 'fa-drum' },
+                { key: 'makanan', label: 'Makanan Khas', icon: 'fa-bowl-food' },
+                { key: 'upacara', label: 'Tradisi & Upacara Adat', icon: 'fa-fire' }
+            ];
+
+            document.getElementById('modal-elements-grid').innerHTML = elementMeta.map(meta => `
+                <div class="bg-lontar p-3.5 rounded-xl border border-lontar-border flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-soga-dark text-emas flex items-center justify-center shrink-0 mt-0.5">
+                        <i class="fa-solid ${meta.icon}"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-terakota">${meta.label}</div>
+                        <div class="text-xs sm:text-sm text-soga-dark font-medium mt-0.5 leading-snug">${item.elements[meta.key]}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            const modal = document.getElementById('culture-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCultureModal() {
+            const modal = document.getElementById('culture-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Tutup modal saat klik area gelap di luar kotak
+        document.getElementById('culture-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'culture-modal') closeCultureModal();
+        });
+
+
+        /* =========================================================================
+           3. STUDIO SIMULASI GAMELAN & ALAT MUSIK TRADISIONAL (WEB AUDIO API)
+           ========================================================================= */
+        let audioCtx = null;
+        let currentInstrument = 'gamelan';
+        let melodyInterval = null;
+
+        const instrumentsConfig = {
+            gamelan: {
+                title: 'Gamelan Saron (Laras Pelog Jawa-Bali)',
+                desc: 'Bilah perunggu yang dipukul dengan tabuh kayu, menghasilkan denting resonansi metalik yang agung.',
+                style: 'bronze',
+                notes: [
+                    { label: '1 (Ji)', sub: 'Ding', freq: 293.66 },   // D4
+                    { label: '2 (Ro)', sub: 'Dong', freq: 329.63 },   // E4
+                    { label: '3 (Lu)', sub: 'Deng', freq: 349.23 },   // F4
+                    { label: '4 (Pat)', sub: 'Dung', freq: 440.00 },  // A4
+                    { label: '5 (Ma)', sub: 'Dang', freq: 493.88 },   // B4
+                    { label: '6 (Nem)', sub: 'Ding+', freq: 587.33 }, // D5
+                    { label: '7 (Pi)', sub: 'Dong+', freq: 659.25 }   // E5
+                ]
+            },
+            angklung: {
+                title: 'Angklung Bambu (Tatar Sunda, Jawa Barat)',
+                desc: 'Tabung bambu berukir yang digetarkan (kurulung), menghasilkan suara getaran kayu berongga yang hangat.',
+                style: 'bamboo',
+                notes: [
+                    { label: 'Do (1)', sub: 'C4', freq: 261.63 },
+                    { label: 'Re (2)', sub: 'D4', freq: 293.66 },
+                    { label: 'Mi (3)', sub: 'E4', freq: 329.63 },
+                    { label: 'Fa (4)', sub: 'F4', freq: 349.23 },
+                    { label: 'Sol (5)', sub: 'G4', freq: 392.00 },
+                    { label: 'La (6)', sub: 'A4', freq: 440.00 },
+                    { label: 'Si (7)', sub: 'B4', freq: 493.88 }
+                ]
+            },
+            kolintang: {
+                title: 'Kolintang Kayu (Minahasa, Sulawesi Utara)',
+                desc: 'Bilah kayu ringan pilihan (kayu telur/bandaran) yang menghasilkan nada perkusi marimba Nusantara yang cerah.',
+                style: 'wood',
+                notes: [
+                    { label: 'Do (1)', sub: 'C4', freq: 261.63 },
+                    { label: 'Re (2)', sub: 'D4', freq: 293.66 },
+                    { label: 'Mi (3)', sub: 'E4', freq: 329.63 },
+                    { label: 'Fa (4)', sub: 'F4', freq: 349.23 },
+                    { label: 'Sol (5)', sub: 'G4', freq: 392.00 },
+                    { label: 'La (6)', sub: 'A4', freq: 440.00 },
+                    { label: 'Do+ (7)', sub: 'C5', freq: 523.25 }
+                ]
+            },
+            sasando: {
+                title: 'Sasando Lontar (Pulau Rote, Nusa Tenggara Timur)',
+                desc: 'Instrumen petik berdawai dengan resonator daun lontar, menghasilkan petikan harpa yang jernih dan syahdu.',
+                style: 'harp',
+                notes: [
+                    { label: '1', sub: 'G3', freq: 196.00 },
+                    { label: '2', sub: 'A3', freq: 220.00 },
+                    { label: '3', sub: 'B3', freq: 246.94 },
+                    { label: '4', sub: 'D4', freq: 293.66 },
+                    { label: '5', sub: 'E4', freq: 329.63 },
+                    { label: '6', sub: 'G4', freq: 392.00 },
+                    { label: '7', sub: 'A4', freq: 440.00 }
+                ]
+            },
+            tifa: {
+                title: 'Tifa & Totobuang (Maluku & Papua)',
+                desc: 'Perpaduan tabuhan gendang Tifa berukir khas timur Indonesia dengan gong kecil Totobuang yang bertenaga.',
+                style: 'drum',
+                notes: [
+                    { label: 'Gong', sub: 'Bass', freq: 98.00 },
+                    { label: 'Tifa 1', sub: 'Deng', freq: 146.83 },
+                    { label: 'Tifa 2', sub: 'Tak', freq: 220.00 },
+                    { label: 'Toto 1', sub: 'G4', freq: 392.00 },
+                    { label: 'Toto 2', sub: 'A4', freq: 440.00 },
+                    { label: 'Toto 3', sub: 'C5', freq: 523.25 },
+                    { label: 'Toto 4', sub: 'D5', freq: 587.33 }
+                ]
+            }
+        };
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function selectInstrument(instKey) {
+            stopAutoMelody();
+            currentInstrument = instKey;
+            const cfg = instrumentsConfig[instKey];
+
+            document.getElementById('inst-title').innerText = cfg.title;
+            document.getElementById('inst-desc').innerText = cfg.desc;
+
+            // Update tombol selector
+            document.querySelectorAll('.inst-btn').forEach(btn => {
+                if (btn.dataset.inst === instKey) {
+                    btn.className = 'inst-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emas text-soga-deep transition-all shadow-md';
+                } else {
+                    btn.className = 'inst-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-soga text-lontar border border-emas/40 hover:border-emas transition-all';
+                }
+            });
+
+            renderInstrumentKeys();
+        }
+
+        function renderInstrumentKeys() {
+            const container = document.getElementById('instrument-keys-container');
+            const cfg = instrumentsConfig[currentInstrument];
+
+            const styleClasses = {
+                bronze: 'bg-gradient-to-b from-emas-light via-emas to-emas-dark text-soga-deep border-2 border-yellow-200',
+                bamboo: 'bg-gradient-to-b from-[#D9B982] via-[#B88B4A] to-[#7A5522] text-soga-deep border-2 border-[#EED6A7]',
+                wood: 'bg-gradient-to-b from-[#8B4513] via-[#5C3A21] to-[#3B2313] text-emas-light border-2 border-emas/60',
+                harp: 'bg-gradient-to-b from-terakota-light via-terakota to-terakota-dark text-emas-light border-2 border-emas',
+                drum: 'bg-gradient-to-b from-[#6B3E26] via-[#4A2511] to-[#2B1408] text-emas border-2 border-emas'
+            };
+
+            container.innerHTML = cfg.notes.map((note, idx) => {
+                // Tinggi bilah bertangga layaknya saron/kolintang asli
+                const heightPercent = 100 - (idx * 5);
+                return `
+                    <button id="key-btn-${idx}" onclick="playNote(${idx})" 
+                            style="height: ${heightPercent}%"
+                            class="instrument-key ${styleClasses[cfg.style]} rounded-xl p-2 sm:p-3 flex flex-col items-center justify-between shadow-lg cursor-pointer relative">
+                        <span class="w-2.5 h-2.5 rounded-full bg-soga-deep/40 border border-white/30"></span>
+                        <div class="text-center my-2">
+                            <div class="font-serif font-black text-sm sm:text-lg leading-tight">${note.label}</div>
+                            <div class="text-[10px] sm:text-xs opacity-80 font-medium mt-0.5">${note.sub}</div>
+                        </div>
+                        <kbd class="px-1.5 py-0.5 rounded bg-black/25 text-[10px] font-mono text-white">${idx + 1}</kbd>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Sintesis Suara Tradisional dengan Web Audio API (Tanpa file audio eksternal)
+        function playNote(index) {
+            initAudioContext();
+            const cfg = instrumentsConfig[currentInstrument];
+            const note = cfg.notes[index];
+            if (!note) return;
+
+            const now = audioCtx.currentTime;
+            const freq = note.freq;
+
+            // Animasi bilah & visualizer
+            const keyEl = document.getElementById(`key-btn-${index}`);
+            if (keyEl) {
+                keyEl.classList.add('active-hit');
+                setTimeout(() => keyEl.classList.remove('active-hit'), 160);
+            }
+            animateVisualizer();
+
+            // Karakteristik sintesis sesuai jenis alat musik
+            if (currentInstrument === 'gamelan') {
+                // Metalik resonansi perunggu (Fundamental + Overtone inharmonik khas gamelan)
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(freq, now);
+
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(freq * 2.756, now); // Overtone khas perunggu
+
+                const overtoneGain = audioCtx.createGain();
+                overtoneGain.gain.setValueAtTime(0.18, now);
+                overtoneGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+                gain.gain.setValueAtTime(0.45, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+                osc1.connect(gain);
+                osc2.connect(overtoneGain);
+                overtoneGain.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 1.85);
+                osc2.stop(now + 1.85);
+
+            } else if (currentInstrument === 'angklung') {
+                // Efek getaran "kurulung" bambu menggunakan LFO amplitude modulation
+                const osc = audioCtx.createOscillator();
+                const lfo = audioCtx.createOscillator();
+                const lfoGain = audioCtx.createGain();
+                const mainGain = audioCtx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+
+                lfo.type = 'sine';
+                lfo.frequency.setValueAtTime(16, now); // Getaran cepat 16Hz
+                lfoGain.gain.setValueAtTime(0.22, now);
+
+                mainGain.gain.setValueAtTime(0.35, now);
+                mainGain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+
+                lfo.connect(lfoGain);
+                lfoGain.connect(mainGain.gain);
+                osc.connect(mainGain);
+                mainGain.connect(audioCtx.destination);
+
+                osc.start(now);
+                lfo.start(now);
+                osc.stop(now + 1.15);
+                lfo.stop(now + 1.15);
+
+            } else if (currentInstrument === 'kolintang') {
+                // Kayu marimba hangat & cepat
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.7);
+
+            } else if (currentInstrument === 'sasando') {
+                // Petikan dawai harpa jernih dengan filter lowpass
+                const osc = audioCtx.createOscillator();
+                const filter = audioCtx.createBiquadFilter();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(freq, now);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(freq * 4, now);
+                filter.frequency.exponentialRampToValueAtTime(freq, now + 1.4);
+
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1.65);
+
+            } else if (currentInstrument === 'tifa') {
+                // Tabuhan membran Tifa (pitch drop) untuk indeks 0-2, dan Gong kecil Totobuang untuk 3-6
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                if (index <= 2) {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq * 1.45, now);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 0.75, now + 0.25);
+                    gain.gain.setValueAtTime(0.65, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                } else {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                }
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1.25);
+            }
+        }
+
+        function animateVisualizer() {
+            const bars = document.querySelectorAll('.wave-bar');
+            bars.forEach(bar => {
+                const randomH = Math.floor(Math.random() * 26) + 8;
+                bar.style.height = `${randomH}px`;
+                setTimeout(() => {
+                    bar.style.height = '8px';
+                }, 220);
+            });
+        }
+
+        // Melodi Otomatis Lagu Daerah Sederhana (Indeks bilah 0-6)
+        const melodies = {
+            gambang: {
+                name: 'Gambang Suling (Jawa Tengah)',
+                seq: [2, 3, 4, 2, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2]
+            },
+            rasasayange: {
+                name: 'Rasa Sayange (Maluku)',
+                seq: [2, 2, 4, 4, 3, 2, 1, 2, 3, 3, 5, 5, 4, 3, 2, 0]
+            }
+        };
+
+        function playAutoMelody(songKey) {
+            stopAutoMelody();
+            const song = melodies[songKey];
+            if (!song) return;
+
+            document.getElementById('now-playing-text').innerText = `Memutar: ${song.name}`;
+            let step = 0;
+
+            playNote(song.seq[step]);
+            step++;
+
+            melodyInterval = setInterval(() => {
+                if (step >= song.seq.length) {
+                    stopAutoMelody();
+                    return;
+                }
+                playNote(song.seq[step]);
+                step++;
+            }, 360);
+        }
+
+        function stopAutoMelody() {
+            if (melodyInterval) {
+                clearInterval(melodyInterval);
+                melodyInterval = null;
+            }
+            document.getElementById('now-playing-text').innerText = 'Siap dimainkan';
+        }
+
+        // Kontrol Keyboard Angka 1 - 7 saat di Tab Musik
+        document.addEventListener('keydown', (e) => {
+            const musicTab = document.getElementById('tab-musik');
+            if (musicTab.classList.contains('hidden')) return;
+            const num = parseInt(e.key);
+            if (num >= 1 && num <= 7) {
+                playNote(num - 1);
+            }
+        });
+
+
+        /* =========================================================================
+           4. STUDIO SIMULASI MEMBATIK & MOTIF NUSANTARA (HTML5 CANVAS)
+           ========================================================================= */
+        const canvas = document.getElementById('batik-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let currentBatikColor = '#5C3A21';
+        let currentPattern = 'kawung';
+        let currentBgColor = '#FAF6F0';
+
+        const patternPhilosophies = {
+            kawung: 'Filosofi Kawung: Melambangkan kesucian hati, pengendalian diri, dan harapan agar manusia selalu berguna bagi sesama.',
+            parang: 'Filosofi Parang: Bermotif ombak samudra yang tak pernah putus, melambangkan semangat pantang menyerah dan kesinambungan.',
+            megamendung: 'Filosofi Mega Mendung (Cirebon): Awan pembawa hujan penyejuk, melambangkan kesabaran dan pemimpin yang mengayomi.',
+            songket: 'Filosofi Tenun Songket: Geometri emas yang melambangkan kemuliaan, kemakmuran, dan keagungan budaya Sumatera.',
+            ulos: 'Filosofi Tenun Ulos (Batak): Garis-garis sakral penghangat jiwa yang melambangkan ikatan kasih sayang dan restu leluhur.',
+            polos: 'Kain Mori Polos: Kanvas bebas bagi kreasi motif kontemporer Nusantara sesuai imajinasimu.'
+        };
+
+        function initBatikCanvas() {
+            canvas.width = 600;
+            canvas.height = 450;
+            clearBatikCanvas();
+        }
+
+        function setBatikPattern(pattern) {
+            currentPattern = pattern;
+            document.getElementById('pattern-philosophy').innerHTML = `<strong>${patternPhilosophies[pattern].split(':')[0]}:</strong>${patternPhilosophies[pattern].split(':')[1]}`;
+
+            document.querySelectorAll('.pattern-btn').forEach(btn => {
+                if (btn.getAttribute('onclick').includes(`'${pattern}'`)) {
+                    btn.className = 'pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-soga-dark text-emas border border-emas text-left';
+                } else {
+                    btn.className = 'pattern-btn px-3 py-2 rounded-xl text-xs font-semibold bg-lontar text-soga-dark border border-lontar-border hover:border-emas text-left';
+                }
+            });
+
+            clearBatikCanvas();
+        }
+
+        function drawTemplateStencil() {
+            ctx.save();
+            ctx.strokeStyle = currentBgColor === '#1E293B' ? 'rgba(212, 175, 55, 0.25)' : 'rgba(92, 58, 33, 0.16)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            if (currentPattern === 'kawung') {
+                // Pola lingkaran elips bersinggungan khas Kawung
+                const step = 90;
+                for (let x = step / 2; x < w; x += step) {
+                    for (let y = step / 2; y < h; y += step) {
+                        for (let a = 0; a < 4; a++) {
+                            ctx.save();
+                            ctx.translate(x, y);
+                            ctx.rotate((a * Math.PI) / 2);
+                            ctx.beginPath();
+                            ctx.ellipse(22, 0, 22, 12, 0, 0, Math.PI * 2);
+                            ctx.stroke();
+                            ctx.restore();
+                        }
+                    }
+                }
+            } else if (currentPattern === 'parang') {
+                // Pola gelombang diagonal khas Parang
+                for (let offset = -h; offset < w + h; offset += 75) {
+                    ctx.beginPath();
+                    for (let y = 0; y <= h; y += 10) {
+                        const x = offset + y * 0.8 + Math.sin(y * 0.08) * 14;
+                        if (y === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+            } else if (currentPattern === 'megamendung') {
+                // Pola awan berlapis khas Cirebon
+                const cloudCenters = [[150, 130], [450, 130], [300, 230], [150, 340], [450, 340]];
+                cloudCenters.forEach(([cx, cy]) => {
+                    for (let r = 20; r <= 65; r += 15) {
+                        ctx.beginPath();
+                        ctx.ellipse(cx, cy, r * 1.4, r * 0.7, 0, Math.PI, 0);
+                        ctx.stroke();
+                    }
+                });
+            } else if (currentPattern === 'songket') {
+                // Pola belah ketupat geometris Songket
+                const step = 80;
+                for (let x = 0; x <= w; x += step) {
+                    for (let y = 0; y <= h; y += step) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, y - 35);
+                        ctx.lineTo(x + 35, y);
+                        ctx.lineTo(x, y + 35);
+                        ctx.lineTo(x - 35, y);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+            } else if (currentPattern === 'ulos') {
+                // Garis-garis tenun horizontal & tumpal khas Ulos Batak
+                for (let y = 30; y < h; y += 35) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                    ctx.stroke();
+                }
+                // Motif pucuk rebung di tepi
+                for (let x = 0; x < w; x += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x + 20, 45);
+                    ctx.lineTo(x + 40, 0);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+        }
+
+        function selectBatikColor(hex, label) {
+            currentBatikColor = hex;
+            document.getElementById('active-dye-label').innerText = `Pewarna aktif: ${label}`;
+
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                if (btn.getAttribute('onclick').includes(hex)) {
+                    btn.classList.add('ring-2', 'ring-offset-2', 'ring-emas');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-offset-2', 'ring-emas');
+                }
+            });
+        }
+
+        function dyeBackground(bgHex) {
+            // Simpan goresan saat ini sebelum ganti latar dengan teknik compositing
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            tempCanvas.getContext('2d').drawImage(canvas, 0, 0);
+
+            currentBgColor = bgHex;
+            ctx.fillStyle = bgHex;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawTemplateStencil();
+
+            // Terapkan mode blend multiply untuk latar terang atau normal untuk nila gelap
+            ctx.save();
+            if (bgHex !== '#1E293B') {
+                ctx.globalAlpha = 0.85;
+            }
+            ctx.drawImage(tempCanvas, 0, 0);
+            ctx.restore();
+
+            showToast('Proses pelodoran warna latar kain berhasil diterapkan!');
+        }
+
+        function clearBatikCanvas() {
+            ctx.fillStyle = currentBgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawTemplateStencil();
+        }
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function drawStrokeLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        function performBatikDraw(x, y) {
+            const size = parseInt(document.getElementById('brush-size').value);
+            const symmetry = document.getElementById('symmetry-mode').value;
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.strokeStyle = currentBatikColor;
+            ctx.lineWidth = size;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Goresan utama
+            drawStrokeLine(lastX, lastY, x, y);
+
+            // Goresan simetri untuk memudahkan pembuatan pola batik yang rapi
+            if (symmetry === 'mirror' || symmetry === 'quad') {
+                drawStrokeLine(w - lastX, lastY, w - x, y);
+            }
+            if (symmetry === 'quad') {
+                drawStrokeLine(lastX, h - lastY, x, h - y);
+                drawStrokeLine(w - lastX, h - lastY, w - x, h - y);
+            }
+
+            lastX = x;
+            lastY = y;
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const pos = getCanvasCoords(e);
+            lastX = pos.x;
+            lastY = pos.y;
+            performBatikDraw(pos.x, pos.y);
+        });
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            const pos = getCanvasCoords(e);
+            performBatikDraw(pos.x, pos.y);
+        });
+        window.addEventListener('mouseup', () => { isDrawing = false; });
+
+        // Dukungan Sentuhan Mobile (Touch Events)
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDrawing = true;
+            const pos = getCanvasCoords(e);
+            lastX = pos.x;
+            lastY = pos.y;
+            performBatikDraw(pos.x, pos.y);
+        }, { passive: false });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!isDrawing) return;
+            const pos = getCanvasCoords(e);
+            performBatikDraw(pos.x, pos.y);
+        }, { passive: false });
+        canvas.addEventListener('touchend', () => { isDrawing = false; });
+
+        function downloadBatikArt() {
+            const link = document.createElement('a');
+            link.download = `Karya-Batik-Nusantara-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('Karya wastra batik berhasil diunduh!');
+        }
+
+
+        /* =========================================================================
+           5. SIMULASI KUIS & TEKA-TEKI BUDAYA NUSANTARA
+           ========================================================================= */
+        const quizQuestions = [
+            {
+                category: 'Arsitektur Adat',
+                question: 'Rumah adat suku Manggarai di Kampung Wae Rebo, Flores, NTT yang berbentuk kerucut dengan lima tingkat ruangan disebut...',
+                options: ['Rumah Honai', 'Mbaru Niang', 'Uma Lengge', 'Rumah Baileo'],
+                correct: 1,
+                explanation: 'Mbaru Niang adalah rumah adat kerucut khas Wae Rebo yang diakui UNESCO sebagai warisan budaya Asia-Pasifik karena konstruksi ramah lingkungan dan filosofi gotong royong.'
+            },
+            {
+                category: 'Alat Musik Tradisional',
+                question: 'Alat musik petik berdawai dari Pulau Rote, Nusa Tenggara Timur yang menggunakan anyaman daun lontar sebagai resonatornya adalah...',
+                options: ['Sasando', 'Sape’', 'Hasapi', 'Kacapi'],
+                correct: 0,
+                explanation: 'Sasando berasal dari kata "sasandu" dalam bahasa Rote yang artinya alat yang bergetar atau berbunyi, terbuat dari bambu dan daun lontar.'
+            },
+            {
+                category: 'Tradisi & Upacara',
+                question: 'Tradisi lompat batu setinggi lebih dari 2 meter di Pulau Nias sebagai tanda kedewasaan seorang pemuda disebut...',
+                options: ['Rambu Solo’', 'Fahombo', 'Tabuik', 'Pasola'],
+                correct: 1,
+                explanation: 'Fahombo atau Hombo Batu adalah tradisi masyarakat Nias Selatan untuk melatih ketangkasan fisik dan kesiapan pemuda dalam mempertahankan desanya.'
+            },
+            {
+                category: 'Seni Tari',
+                question: 'Tarian tradisional dari dataran tinggi Gayo, Aceh yang dimainkan secara massal tanpa iringan alat musik dan mengandalkan tepukan tubuh adalah...',
+                options: ['Tari Seudati', 'Tari Piring', 'Tari Saman', 'Tari Tortor'],
+                correct: 2,
+                explanation: 'Tari Saman telah ditetapkan UNESCO sebagai Warisan Budaya Takbenda Dunia sejak 24 November 2011.'
+            },
+            {
+                category: 'Kekerabatan & Sosial',
+                question: 'Sistem kekerabatan masyarakat Batak yang terdiri dari tiga unsur tungku (Somba Marhula-hula, Elek Marboru, Manat Mardongan Tubu) disebut...',
+                options: ['Tri Hita Karana', 'Dalihan Na Tolu', 'Siri’ na Pacce', 'Silih Asah Silih Asih'],
+                correct: 1,
+                explanation: 'Dalihan Na Tolu berarti "tungku berkaki tiga", yang menjadi fondasi tata krama, adat perkawinan, dan kehidupan sosial masyarakat Batak.'
+            },
+            {
+                category: 'Wastra & Kerajinan',
+                question: 'Tas tradisional rajutan tangan dari serat kulit kayu milik masyarakat Papua yang disandang menggunakan kepala adalah...',
+                options: ['Ulos', 'Tapis', 'Noken', 'Tenun Ikat'],
+                correct: 2,
+                explanation: 'Noken merupakan simbol kehidupan yang baik, perdamaian, dan kesuburan bagi masyarakat Papua dan telah diakui oleh UNESCO.'
+            },
+            {
+                category: 'Warisan Maritim',
+                question: 'Perahu layar tradisional mahakarya pengrajin Bulukumba, Sulawesi Selatan yang melegenda sebagai penjelajah samudra Nusantara adalah...',
+                options: ['Kapal Pinisi', 'Perahu Cadik', 'Kapal Lancang Kuning', 'Perahu Jukung'],
+                correct: 0,
+                explanation: 'Seni pembuatan Kapal Pinisi memadukan kearifan lokal tanpa cetak biru tertulis dan diakui sebagai Warisan Budaya Takbenda UNESCO.'
+            },
+            {
+                category: 'Filosofi Daerah',
+                question: 'Semboyan persaudaraan sejati dari Kepulauan Maluku yang bermakna "Apa yang engkau rasakan, kurasakan juga" adalah...',
+                options: ['Ale Rasa Beta Rasa', 'Torang Samua Basudara', 'Memayu Hayuning Bawana', 'Alam Takambang Jadi Guru'],
+                correct: 0,
+                explanation: 'Ale Rasa Beta Rasa dan tradisi Pela Gandong menjadi perekat persaudaraan lintas negeri/desa di Maluku.'
+            },
+            {
+                category: 'Senjata Pusaka',
+                question: 'Senjata tradisional khas masyarakat Dayak di Kalimantan yang memiliki ukiran indah pada gagang tanduk serta bilah ber-pamor adalah...',
+                options: ['Rencong', 'Kujang', 'Mandau', 'Badik'],
+                correct: 2,
+                explanation: 'Mandau merupakan pusaka kehormatan suku Dayak yang diwariskan turun-temurun dan sarat nilai spiritual.'
+            },
+            {
+                category: 'Sistem Irigasi & Agraria',
+                question: 'Organisasi kemasyarakatan di Bali yang mengatur sistem pengairan sawah secara adil berdasarkan filosofi Tri Hita Karana adalah...',
+                options: ['Banjar', 'Subak', 'Mapalus', 'Sasi'],
+                correct: 1,
+                explanation: 'Subak mencerminkan konsep Tri Hita Karana yang menyatukan alam, manusia, dan spiritualitas dalam pertanian padi di Bali.'
+            }
+        ];
+
+        let qIndex = 0;
+        let qScore = 0;
+        let qLives = 3;
+        let qCorrectCount = 0;
+        let qAnswered = false;
+
+        function loadQuizQuestion() {
+            qAnswered = false;
+            const q = quizQuestions[qIndex];
+
+            document.getElementById('quiz-current-num').innerText = qIndex + 1;
+            document.getElementById('quiz-total-num').innerText = quizQuestions.length;
+            document.getElementById('quiz-category-badge').innerText = q.category;
+            document.getElementById('quiz-question').innerText = q.question;
+            document.getElementById('quiz-explanation').classList.add('hidden');
+
+            // Render Hati/Nyawa
+            let heartsHtml = '';
+            for (let i = 0; i < 3; i++) {
+                heartsHtml += i < qLives 
+                    ? '<i class="fa-solid fa-heart text-terakota"></i>' 
+                    : '<i class="fa-regular fa-heart text-soga/30"></i>';
+            }
+            document.getElementById('quiz-lives').innerHTML = heartsHtml;
+
+            const letters = ['A', 'B', 'C', 'D'];
+            document.getElementById('quiz-options').innerHTML = q.options.map((opt, idx) => `
+                <button onclick="submitQuizAnswer(${idx})" id="q-opt-${idx}" 
+                        class="w-full text-left p-4 rounded-xl bg-lontar hover:bg-lontar-dark border-2 border-lontar-border hover:border-emas transition-all flex items-center gap-3.5 group">
+                    <span class="w-8 h-8 rounded-lg bg-soga-dark text-emas font-bold text-sm flex items-center justify-center shrink-0 group-hover:bg-terakota group-hover:text-white transition-colors">
+                        ${letters[idx]}
+                    </span>
+                    <span class="font-semibold text-sm sm:text-base text-soga-dark">${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function submitQuizAnswer(selectedIdx) {
+            if (qAnswered) return;
+            qAnswered = true;
+
+            const q = quizQuestions[qIndex];
+            const isCorrect = selectedIdx === q.correct;
+
+            // Nonaktifkan semua opsi & beri warna indikator
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`q-opt-${idx}`);
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.className = 'w-full text-left p-4 rounded-xl bg-emerald-100 border-2 border-emerald-600 flex items-center gap-3.5';
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.className = 'w-full text-left p-4 rounded-xl bg-red-100 border-2 border-terakota flex items-center gap-3.5';
+                } else {
+                    btn.className = 'w-full text-left p-4 rounded-xl bg-lontar/50 border-2 border-lontar-border opacity-60 flex items-center gap-3.5';
+                }
+            });
+
+            if (isCorrect) {
+                qScore += 10;
+                qCorrectCount++;
+                document.getElementById('quiz-score').innerText = qScore;
+                document.getElementById('quiz-feedback-title').innerText = 'Tepat Sekali! (+10 Poin)';
+            } else {
+                qLives = Math.max(0, qLives - 1);
+                document.getElementById('quiz-feedback-title').innerText = 'Kurang Tepat — Mari Pelajari Faktanya:';
+                // Update tampilan hati
+                let heartsHtml = '';
+                for (let i = 0; i < 3; i++) {
+                    heartsHtml += i < qLives 
+                        ? '<i class="fa-solid fa-heart text-terakota"></i>' 
+                        : '<i class="fa-regular fa-heart text-soga/30"></i>';
+                }
+                document.getElementById('quiz-lives').innerHTML = heartsHtml;
+            }
+
+            document.getElementById('quiz-explanation-text').innerText = q.explanation;
+            document.getElementById('quiz-explanation').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (qLives <= 0 || qIndex + 1 >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+            qIndex++;
+            loadQuizQuestion();
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-header').classList.add('hidden');
+            document.getElementById('quiz-body').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+
+            document.getElementById('quiz-final-score').innerText = qScore;
+            document.getElementById('quiz-final-correct').innerText = `${qCorrectCount}/${quizQuestions.length}`;
+
+            let rankTitle = 'Sahabat Budaya Nusantara';
+            let rankDesc = 'Langkah awal yang baik! Terus jelajahi tab Eksplorasi Pulau untuk mengenal lebih banyak warisan leluhur.';
+
+            if (qScore >= 90) {
+                rankTitle = 'Empu Agung Budaya Nusantara';
+                rankDesc = 'Luar biasa! Wawasanmu tentang adat istiadat dari Sabang sampai Merauke sangat mengagumkan dan layak menjadi teladan pelestari budaya.';
+            } else if (qScore >= 60) {
+                rankTitle = 'Duta Muda Nusantara';
+                rankDesc = 'Hebat! Kamu memiliki pengetahuan yang kuat tentang kekayaan tradisi berbagai pulau di Indonesia.';
+            }
+
+            document.getElementById('quiz-rank-title').innerText = rankTitle;
+            document.getElementById('quiz-rank-desc').innerText = rankDesc;
+        }
+
+        function restartQuiz() {
+            qIndex = 0;
+            qScore = 0;
+            qLives = 3;
+            qCorrectCount = 0;
+            document.getElementById('quiz-score').innerText = '0';
+            document.getElementById('quiz-header').classList.remove('hidden');
+            document.getElementById('quiz-body').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            loadQuizQuestion();
+        }
+
+
+        /* =========================================================================
+           6. NAVIGASI TAB & NOTIFIKASI TOAST
+           ========================================================================= */
+        function switchTab(tabName) {
+            // Hentikan melodi otomatis jika berpindah dari tab musik
+            if (tabName !== 'musik') {
+                stopAutoMelody();
+            }
+
+            // Sembunyikan semua tab-pane
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.add('hidden');
+            });
+
+            // Tampilkan tab yang dipilih
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            // Perbarui gaya tombol navigasi
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = 'nav-btn flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all text-lontar hover:bg-soga border border-transparent hover:border-emas/40';
+            });
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            activeBtn.className = 'nav-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all bg-gradient-to-r from-emas to-emas-kunyit text-soga-deep shadow-md';
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-soga-dark text-emas-light border border-emas px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm font-medium flex items-center gap-2.5 animate-[fadeIn_0.2s_ease-out]';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emas"></i><span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        /* =========================================================================
+           7. INISIALISASI APLIKASI SAAT HALAMAN DIMUAT
+           ========================================================================= */
+        window.onload = function () {
+            renderCultureCards();
+            renderInstrumentKeys();
+            initBatikCanvas();
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>
